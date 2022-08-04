@@ -1,0 +1,8 @@
+{
+    "start_block": 4605169,
+    "end_block": 15186229,
+    "max_search_range": 50000,
+    "address": "0xb1690c08e213a35ed9bab7b318de14420fb57d8c",
+    "api_key": "",
+    "min_time_between_requests": 0.2
+}

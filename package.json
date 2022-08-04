@@ -1,0 +1,14 @@
+{
+  "name": "alchemy",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@alch/alchemy-web3": "^1.4.6"
+  },
+  "scripts": {
+    "search": "node src/index.js"
+  },
+  "type": "module"
+}

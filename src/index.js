@@ -20,6 +20,10 @@ try {
   };
 }
 
+if (settingsJson.api_key === "") {
+  settingsJson.min_time_between_requests = 5.0;
+}
+
 let currentBlock = settingsJson.start_block;
 let currentRange = settingsJson.max_search_range;
 let finished = false;
@@ -49,7 +53,9 @@ while (!finished) {
     }&startblock=${currentBlock}&endblock=${Math.min(
       currentBlock + currentRange,
       settingsJson.end_block
-    )}&sort=asc&apiKey=${settingsJson.api_key}}`
+    )}&sort=asc${
+      settingsJson.api_key ? "&apiKey=" + settingsJson.api_key : ""
+    }}`
   );
 
   const resultJson = await result.json();
@@ -93,12 +99,13 @@ while (!finished) {
   }
 
   // Setting minimum time between calls to settingsJson.min_time_between_requests
-  // (Etherscan provides 5 TPS when using a free API key)
+  // (Etherscan provides 5 TPS when using a free API key and 0.2 TPS with no key)
   const end = new Date();
-  const diffSeconds = (end.getTime() - start.getTime) / 1000;
-  if (diffSeconds < settingsJson.min_time_between_requests) {
+  const diffMilli = end.getTime() - start.getTime();
+
+  if (diffMilli / 1000 < settingsJson.min_time_between_requests) {
     await new Promise((resolve) =>
-      setTimeout(resolve, settingsJson.min_time_between_requests - diffSeconds)
+      setTimeout(resolve, settingsJson.min_time_between_requests * 1000)
     );
   }
 
